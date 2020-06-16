@@ -1,3 +1,6 @@
+package Server;
+
+
 import java.io.*;
 import java.net.*;
 
@@ -33,25 +36,17 @@ class Connection implements Runnable {
       socketInput = communicationSocket.getInputStream();
       in = new BufferedReader(new InputStreamReader(socketInput));
 
-        
-      InetAddress address = communicationSocket.getInetAddress();
-      String hostname = address.getHostName();
-
-      String welcome = 
-	"Connection made from host: "+hostname+"\nEverybody say hello";
-      String student = server.getStudentName(hostname);
-      if (student != null) welcome += " to "+student;
-      welcome+="!\n";
+      String welcome = "Connection successful \nSay hello to everybody!\n";
+   
       server.sendToAllClients(welcome);
-      System.out.println("Connection made "+student+"@"+hostname);
-      sendMessage("Welcome "+student+" the passphrase is "+magic+"\n");
+      System.out.println("Connection made ");
+      sendMessage("Welcome the passphrase is "+magic+"\n");
       String input = null;
 
       while ((input = in.readLine()) != null) {
 	if (input.indexOf(magic) != -1) {
 	  server.playMagicSound();
-	  sendMessage("Congratulations "+student+" you sent the passphrase!\n");
-	  System.out.println(student+" sent the passphrase!");
+	  sendMessage("Congratulations, you sent the passphrase!\n");
 	} else {
 	  server.sendToAllClients(input+"\n");
 	}
